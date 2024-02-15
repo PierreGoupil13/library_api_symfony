@@ -11,15 +11,24 @@
         "doctrine/doctrine-bundle": "^2.11",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.0",
+        "phpdocumentor/reflection-docblock": "^5.3",
+        "phpstan/phpdoc-parser": "^1.25",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.0.*",
+        "symfony/property-access": "7.0.*",
+        "symfony/property-info": "7.0.*",
         "symfony/runtime": "7.0.*",
+        "symfony/serializer": "7.0.*",
         "symfony/yaml": "7.0.*"
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.54"
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "7.0.*",
+        "symfony/css-selector": "7.0.*",
+        "symfony/maker-bundle": "^1.54",
+        "symfony/phpunit-bridge": "^7.0"
     },
     "config": {
         "allow-plugins": {

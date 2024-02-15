@@ -20,7 +20,7 @@ class Book
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $pages = null;
+    private ?int $pages = null;
 
     #[ORM\Column(length: 255)]
     private ?string $synopsis = null;
