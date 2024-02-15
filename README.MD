@@ -8,3 +8,7 @@ API que je souhaite utiliser pour créer des applications basées sur mes lectur
 - Possibilité de CRUD sur celles-ci
 - Tester en Unit et Fonctionnelle 
 - Dockeriser l'application pour deploiement
+
+## Remarques
+
+- Comment fonctionne la BDD de test

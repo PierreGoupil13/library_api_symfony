@@ -23,7 +23,8 @@ class BookController extends AbstractController
     public function createBook(Request $request): Book
     {
         $book = $this->serializer->deserialize($request->getContent(), Book::class, 'json');
-        return $this->bookService->createBook($book);
+        $newBook = $this->bookService->createBook($book);
+        return $newBook;
     }
 
 }

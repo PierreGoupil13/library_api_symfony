@@ -4,6 +4,7 @@ namespace App\Tests\unitTests\src\Manager;
 
 use App\Controller\BookController;
 use App\Entity\Book;
+use App\Interface\BookPersistenceInterface;
 use App\Service\BookService;
 use App\Repository\BookRepository;
 use JetBrains\PhpStorm\NoReturn;
@@ -20,12 +21,12 @@ class BookServiceTest extends TestCase
          */
 
         // Create a mock for the BookRepository
-        /*$bookRepositoryMock = $this->getMockBuilder(BookRepository::class)
+        $bookRepositoryMock = $this->getMockBuilder(BookPersistenceInterface::class)
             ->disableOriginalConstructor()
-            ->getMock();*/
+            ->getMock();
 
         // Create an instance of the BookController with the mocked BookRepository
-        $bookService = new BookService();
+        $bookService = new BookService($bookRepositoryMock);
         $fakeBook = new Book();
 
         /*

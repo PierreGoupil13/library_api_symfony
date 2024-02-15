@@ -28,7 +28,10 @@ class BookControllerTest extends KernelTestCase
 
         $fakeRequest = new Request([], [], [], [], [], [], '
             {
-            "title" : "random book"
+            "title" : "random book",
+            "category" : "Fantasy",
+            "pages" : 555,
+            "synopsis" : "un livre"
             }');
 
         /*
@@ -36,6 +39,11 @@ class BookControllerTest extends KernelTestCase
          */
 
         $result = $bookController->createBook($fakeRequest);
+
+        /*
+         * Assert
+         */
+
         $this->assertInstanceOf(Book::class, $result);
     }
 }
