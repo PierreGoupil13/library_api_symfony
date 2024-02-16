@@ -3,32 +3,24 @@
 namespace App\Tests\integrationTests\Controller;
 
 use App\Controller\BookController;
-use App\Entity\Book;
-use App\Service\BookService;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Interface\BookPersistenceInterface;
+use App\Tests\integrationTests\IntegrationTestTools;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class BookControllerTest extends KernelTestCase
+class BookControllerTest extends IntegrationTestTools
 {
-
-    public function setUp(): void
-    {
-        self::bootKernel();
-    }
-
     public function testCreateBook()
     {
         /*
          * Arrange
          */
 
-        $container = static::getContainer();
-
-        $bookController = $container->get(BookController::class);
-
+        $bookController = $this->container->get(BookController::class);
+        $title = "Dune";
         $fakeRequest = new Request([], [], [], [], [], [], '
             {
-            "title" : "random book",
+            "title" : "Dune",
             "category" : "Fantasy",
             "pages" : 555,
             "synopsis" : "un livre"
@@ -39,11 +31,15 @@ class BookControllerTest extends KernelTestCase
          */
 
         $result = $bookController->createBook($fakeRequest);
+        $bookPersistence = $this->container->get(BookPersistenceInterface::class);
+
+        $boodResult = $bookPersistence->findBy(["title" => $title]);
 
         /*
          * Assert
          */
 
-        $this->assertInstanceOf(Book::class, $result);
+        $this->assertInstanceOf(Response::class, $result);
+        $this->assertEquals($title,$boodResult[0]->getTitle());
     }
 }

@@ -8,8 +8,11 @@ use App\Repository\BookRepository;
 use App\Service\BookService;
 use \Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+#[Route("book")]
 class BookController extends AbstractController
 {
     private BookServiceInterface $bookService;
@@ -20,11 +23,12 @@ class BookController extends AbstractController
         $this->serializer = $serializer;
     }
 
-    public function createBook(Request $request): Book
+    #[Route("/create")]
+    public function createBook(Request $request): Response
     {
         $book = $this->serializer->deserialize($request->getContent(), Book::class, 'json');
         $newBook = $this->bookService->createBook($book);
-        return $newBook;
+        return new Response($this->json($newBook), 200);
     }
 
 }
