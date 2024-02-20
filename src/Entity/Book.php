@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -11,21 +12,27 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("book")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("book")]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("book")]
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("book")]
     private ?int $pages = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("book")]
     private ?string $synopsis = null;
 
-    #[ORM\ManyToOne(inversedBy: 'books')]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'books')]
+    #[Groups("book")]
     private ?Author $author = null;
 
     public function getId(): ?int
@@ -57,12 +64,12 @@ class Book
         return $this;
     }
 
-    public function getPages(): ?string
+    public function getPages(): ?int
     {
         return $this->pages;
     }
 
-    public function setPages(string $pages): static
+    public function setPages(int $pages): static
     {
         $this->pages = $pages;
 

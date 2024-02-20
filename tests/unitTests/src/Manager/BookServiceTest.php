@@ -2,18 +2,17 @@
 
 namespace App\Tests\unitTests\src\Manager;
 
-use App\Controller\BookController;
 use App\Entity\Book;
+use App\Factory\BookFactory;
 use App\Interface\BookPersistenceInterface;
 use App\Service\BookService;
-use App\Repository\BookRepository;
 use JetBrains\PhpStorm\NoReturn;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Zenstruck\Foundry\Test\Factories;
 
 class BookServiceTest extends TestCase
 {
-
+    use Factories;
     private $bookRepositoryMock;
     private BookService $bookService;
     public function setUp(): void
@@ -51,18 +50,13 @@ class BookServiceTest extends TestCase
         /*
          * Arrange
          */
-
-        $fakeBook = new Book();
-        $fakeBook ->setTitle("Dune")
-            ->setPages(555)
-            ->setCategory("Fantasy")
-            ->setSynopsis("un livre");
+        $fakeBook = BookFactory::new()->withoutPersisting()->create();
 
         /*
          * Act
          */
 
-        $result = $this->bookService->createBook($fakeBook);
+        $result = $this->bookService->createBook($fakeBook->object());
 
         /*
          * Assert

@@ -6,6 +6,7 @@ use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AuthorRepository::class)]
 class Author
@@ -13,12 +14,15 @@ class Author
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("book")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("book")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("book")]
     private ?string $lastName = null;
 
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'author')]
