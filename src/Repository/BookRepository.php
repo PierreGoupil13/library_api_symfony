@@ -38,6 +38,14 @@ class BookRepository extends ServiceEntityRepository implements BookPersistenceI
 
     }
 
+    public function delete(Book $book): Book
+    {
+        $this->entityManager->remove($book);
+        $this->entityManager->flush();
+        return $book;
+
+    }
+
 //    /**
 //     * @return Book[] Returns an array of Book objects
 //     */
@@ -53,13 +61,13 @@ class BookRepository extends ServiceEntityRepository implements BookPersistenceI
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Book
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneById($value): ?Book
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

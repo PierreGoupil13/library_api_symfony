@@ -28,6 +28,13 @@ class BookController extends AbstractController
     {
         $book = $this->serializer->deserialize($request->getContent(), Book::class, 'json');
         $newBook = $this->bookService->createBook($book);
+        return new Response($this->json($newBook), 201);
+    }
+
+    #[Route("/delete/{id}")]
+    public function deleteBook(int $id): Response
+    {
+        $newBook = $this->bookService->deleteBookById($id);
         return new Response($this->json($newBook), 200);
     }
 

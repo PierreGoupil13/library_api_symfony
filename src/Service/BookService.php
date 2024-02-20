@@ -16,7 +16,19 @@ class BookService implements BookServiceInterface
     }
     public function createBook(Book $book): Book
     {
-        $newBook = $this->bookPersistence->save($book);
+        $newBook = new Book();
+        $newBook = $book;
+        $this->bookPersistence->save($newBook);
         return $newBook;
+    }
+
+    public function deleteBookById(int $id): bool
+    {
+        $book = $this->bookPersistence->findOneById($id);
+        if($book) {
+            $this->bookPersistence->delete($book);
+            return true;
+        }
+        return false;
     }
 }
