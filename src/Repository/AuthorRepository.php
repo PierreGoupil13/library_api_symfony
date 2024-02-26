@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Author;
+use App\Interface\AuthorPersistenceInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,11 +16,14 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Author[]    findAll()
  * @method Author[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class AuthorRepository extends ServiceEntityRepository
+class AuthorRepository extends ServiceEntityRepository implements AuthorPersistenceInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Author::class);
+
+        $this->entityManager = $entityManager;
     }
 
 //    /**
@@ -45,4 +50,27 @@ class AuthorRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function save(Author $author): Author
+    {
+        $this->entityManager->persist($author);
+        $this->entityManager->flush();
+        return $author;
+    }
+
+    public function delete(Author $author): Author
+    {
+        $this->entityManager->remove($author);
+        $this->entityManager->flush();
+        return $author;
+    }
+
+    public function findOneById($value): ?Author
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

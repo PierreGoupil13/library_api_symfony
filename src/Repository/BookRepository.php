@@ -3,7 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Book;
+use App\Interface\BookPersistenceInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,11 +18,32 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Book[]    findAll()
  * @method Book[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class BookRepository extends ServiceEntityRepository
+class BookRepository extends ServiceEntityRepository implements BookPersistenceInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    private EntityManagerInterface $entityManager;
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Book::class);
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @throws ORMException
+     */
+    public function save(Book $book): Book
+    {
+        $this->entityManager->persist($book);
+        $this->entityManager->flush();
+        return $book;
+
+    }
+
+    public function delete(Book $book): Book
+    {
+        $this->entityManager->remove($book);
+        $this->entityManager->flush();
+        return $book;
+
     }
 
 //    /**
@@ -36,13 +61,13 @@ class BookRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Book
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneById($value): ?Book
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
